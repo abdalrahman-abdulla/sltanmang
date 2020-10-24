@@ -35,11 +35,13 @@
                     <div class="input-group mb-3 text-center text-danger bold" v-if="err"> 
                           <label class=" font-weight-bold w-100 text-center">{{err}}</label>
                     </div>
-                    <button class="btn btn-sm text-white ">
+                    <button class="btn btn-sm text-white " :class="isLoading?'d-none':''">
                         تسجيل الدخول
                         
                     </button>
-                    
+                    <div class="spinner-border" role="status" :class="!isLoading?'d-none':''">
+                        <span class="sr-only">Loading...</span>
+                    </div>
                   </form>
              </div>
         </div>
@@ -53,12 +55,12 @@
 </template>
 
 <script>
- 
+ import router from "../router/index"
 export default {
   name: "login",
  data() {
      return {
-       
+            isLoading:false,
             username: '',
             password: '',
             err:null
@@ -69,24 +71,19 @@ export default {
  },
  methods: {
      login(){
+        this.isLoading=true;
         this.$store
         .dispatch("performLoginAction", {
           username: this.username,
-          password: this.password
+          password: this.password,
+           
         })
         .then(() => {
             
             //window.location.href = 'http://localhost:8080/dashboard/users';
-               var a= this.$store.getters.get_user.permission
-                
-                delete a.permission_name  ;
-                delete a.statistics  ;
-                for (var key in a) {
-                    if(a[key])
-                    {
-                        return window.location.href = 'http://localhost:8080/dashboard/'+key;
-                    }
-                }
+                    this.isLoading=false;
+                    return router.push({ name: 'dashboard' });
+                    
                  
                  
              
@@ -94,11 +91,15 @@ export default {
 
         })
         .catch(err => {
+            this.isLoading=false;
           console.log('failied' + err);
           this.err='اسم المستخدم او كلمة المرور غير صحيح';
         });  
      }
  },
+ mounted(){
+     
+ }
 };
 </script>
 

@@ -46,7 +46,7 @@
                                 
                             </div>
                             <!-- table body -->
-                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(user, index) in users" :key="index">
+                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(user, index) in users" :key="index" >
                                 
                                 <div class="tab-contain p-0 col-1">{{index+1}}</div>
                                 <div class="tab-contain p-0 col-1">{{user.name}}</div>
@@ -176,8 +176,9 @@
              
             </div>
         </div>
-    </div>      
         
+    </div>      
+         
     </div>
    
    
@@ -239,7 +240,7 @@ export default {
                     token:this.$store.getters.get_token
                 }).then(({data}) => {
                 this.users=data.data;
-                 
+                 console.log(this.users)
                 });
         },
         deleteUser(user){

@@ -105,7 +105,7 @@
 <script>
  
 import axios from 'axios';
-import $ from 'jquery'; 3
+import $ from 'jquery';
 import router from "../../router/index"
 
 export default {
@@ -171,7 +171,7 @@ export default {
     
     mounted() {
         this.loadworkstages();
-         if(!this.$store.getters.get_user.permission['workstages'])
+         if(!this.$store.getters.get_user.permission['work_stages'])
         {router.go(-1)}
     },
 };

@@ -56,6 +56,9 @@ export default {
                     for (var key in a) {
                         if(a[key])
                         {
+                            if(key=='work_stages')
+                            return window.location.href = window.location.href +'/workstages';
+                            else
                             return window.location.href = window.location.href +'/'+ key;
                         }
                     }

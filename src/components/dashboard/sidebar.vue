@@ -124,6 +124,7 @@ import router from "../../router/index";
            router.push({ name: 'login' })
         })
         .catch(err => {
+        router.push({ name: 'login' })
           console.log(err);
         });
      
@@ -145,6 +146,8 @@ import router from "../../router/index";
    
   
 };
+
+
 $(document).ready(function(){
   $("ul li").click(function(){
     

@@ -88,8 +88,8 @@
                                 <div class="tab-contain p-0 col-1  yell-ba env"><span>{{item.payment_date}}</span></div>
                                 <div class="tab-contain p-0 col-1 yell-ba"> <span>{{formatToCurrency(item.payment_money)}}</span></div>
                          
-                                <div class="tab-contain p-0 col-1 ">  <span class=" eye icon pen rounded text-white  mr-1"> <font-awesome-icon :icon="['fas', 'eye']"  class="  " fixed-width/></span> </div> 
-                                <div class="tab-contain p-0 col-1 eye"><span class=" env icon pen rounded text-white  mr-1"><font-awesome-icon :icon="['fas', 'envelope']"  class="  " fixed-width/></span> </div>
+                                <div class="tab-contain p-0 col-1 " @click="soon()">  <span class=" eye icon pen rounded text-white  mr-1"> <font-awesome-icon :icon="['fas', 'eye']"  class="  " fixed-width/></span> </div> 
+                                <div class="tab-contain p-0 col-1 eye" @click="soon()"><span class=" env icon pen rounded text-white  mr-1"><font-awesome-icon :icon="['fas', 'envelope']"  class="  " fixed-width/></span> </div>
                                  
                                      
                                 
