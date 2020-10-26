@@ -38,8 +38,8 @@
                                     </div>
                                     
                                 </div>
-                                <div class="input-group   input-group-sm ml-2" @click="soon()">
-                                    <input type="text" class="form-control" placeholder="كلمة البحث" disabled>
+                                <div class="input-group   input-group-sm ml-2">
+                                    <input type="text" class="form-control" placeholder="كلمة البحث" v-model="searchQuery">
                                     <div class="input-group-append">
                                     <span class="input-group-text btn"><font-awesome-icon :icon="['fas', 'calendar-day']"  class="text-white icon" fixed-width/></span>
                                     </div>
@@ -77,7 +77,7 @@
                                 
                             </div>
                             <!-- table body -->
-                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(revenue, index) in revenues" :key="index">
+                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(revenue, index) in searchm" :key="index">
                                 
                                 <div class="tab-contain p-0 col-1">{{index+1}}</div>
                                 <div class="tab-contain p-0 col-1">{{revenue.client_name}}</div>
@@ -123,17 +123,21 @@ export default {
           allmoney:'',
           fromDate:'',
           toDate:'',
+          searchQuery:''
 
       }
   },
     methods: {
         loadrevenues(){
+            
             axios.post(this.$store.getters.get_url+'revenues',{
                 token:this.$store.getters.get_token}).then(({data}) => {
                 this.revenues=data.data;
                 this.copyrevenues=data.data;
                  
                 this.calc()
+            }).catch(()=>{
+                this.$parent.checkau();
             });
         },
         calc(){
@@ -151,15 +155,19 @@ export default {
         },
         filterDate(){
                  
-                this.temp=JSON.parse(JSON.stringify(this.copyrevenues));
-                 
-                for (let index = 0; index < this.temp.length; index++) {
-                    if(!(this.temp[index].paid_date <= this.toDate && this.temp[index].paid_date >= this.fromDate))
-                    {
-                         
-                        this.temp.splice(index,1);
-                        index--;
+                 this.temp=JSON.parse(JSON.stringify(this.copyrevenues));
+                if(this.toDate && this.fromDate)
+                {   
+                   
+                    for (let index = 0; index < this.temp.length; index++) {
+                        if(!(this.temp[index].paid_date <= this.toDate && this.temp[index].paid_date >= this.fromDate))
+                        {
+                            
+                            this.temp.splice(index,1);
+                            index--;
 
+                        }
+                    
                     }
                     
                 }
@@ -175,9 +183,22 @@ export default {
     },
     
     mounted() {
-        this.loadrevenues();
+        this.loadrevenues(); 
          if(!this.$store.getters.get_user.permission['revenues'])
         {router.go(-1)}
+    },
+    computed: {
+        searchm(){
+            
+             
+            let vm = this;
+            if(!vm.searchQuery){
+                return this.revenues;
+            }
+            return vm.revenues.filter(revenue => {
+                return revenue.client_name.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || revenue.payment_name.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || revenue.building_no.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1  
+            })
+        }
     },
 
 }
@@ -189,83 +210,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  
-.logo 
-{
-    font-size: 40px;
-    color: #F0567C;
-}
-.tit-1
-{
-    display: block;
-    text-align: right;
-    color: #f0567c;
-    font-size: 15px;
-    line-height: 10px;
-    margin-top: 6px !important;
-
-}
-.tit-2
-{
-    font-size: 11px;
-    color: #6E84A3;
-}
-.table-tit
-{
-  
-  
-    color: #f0567c;
-    font-size: 13px;
-    line-height: 24px;
-    
-}
-.table-tit-2
-{
-    color: #303658;
-    font-size: 12px;
-    margin: -3px 0px;
-}
-.table-tit-2 SPAN
-{
-    color: #f0567c;
-     
-}
-
-.table-tit-button button
-{
-    background-color:#f0567c ;
-    font-size: 11px
-}
- 
-.tab-contain
-{
-    
-    font-size: 11px;
-    text-align: center;
-
-}
-
-.tab-row
-{
-    padding: 10px;
-}
-
-.tab > div:nth-child(odd)
-{
-     
-  background: #F8FAFF;
- 
-}
-.tab-head
-{
-    background-color:#F5F6FA !important;
-
-}
-.tab-contain span.icon{
- 
-    padding: 2px 5px !important;
-    font-size: 9px;
- 
-}
 .eye 
 {
     color:#39AFD1 ;
@@ -299,8 +243,8 @@ form{
 
 ::placeholder {
   color: #6E84A3;
-  font-size: 9px;
-  text-align: right;
+  direction: rtl;
+    font-size: 10px;
 }
 
 .yell-ba  
@@ -313,6 +257,22 @@ form{
 .table-tit
 {
     direction: rtl;
+}
+
+.input-group-prepend span
+{
+    background-color:#F0567C; 
+    color: white;
+    border-color: black;
+    border: 1px solid #F0567C ; 
+ 
+}
+
+ 
+input
+{
+    direction: rtl;
+    color:#303658;
 }
 </style>
  

@@ -226,6 +226,7 @@ export default {
        this.loadUsers();
        if(!this.$store.getters.get_user.permission['users'])
         {router.go(-1)}
+         
       
   },
   methods: {
@@ -234,16 +235,18 @@ export default {
           this.form.reset();
           
       },
-       loadUsers(){
-           
+       loadUsers(){ 
                 axios.post(this.$store.getters.get_url+'users/all',{
                     token:this.$store.getters.get_token
                 }).then(({data}) => {
-                this.users=data.data;
-                 console.log(this.users)
-                });
+                this.users=data.data; 
+                }).catch(()=>{
+                this.$parent.checkau();
+            });
+                 
         },
         deleteUser(user){
+            this.$parent.checkau();
             Swal.fire({
             title: 'Are you sure?',
             text:  "you want to delete '" + user.username + "'  .......You wont be able to revert this!",
@@ -260,21 +263,23 @@ export default {
                 user.username + ' has been deleted.',
                 'success'
                 )
-                });
+                }).catch(()=>{
+                this.$parent.checkau();
+            });
                 
             }
             })
             setTimeout(() => {  this.loadUsers()}, 2000);
         },
         createUser(){
+            this.$parent.checkau();
             this.form.post(this.$store.getters.get_url+'users',{ headers: {"Authorization" : `Bearer ${this.$store.getters.get_token}`} }).then(() => {
                  
                  
                 $('#addUser').modal('hide')
                 setTimeout(() => {  this.loadUsers()}, 2000);
                 this.form.reset ();
-                });
-                  Swal.mixin({
+                Swal.mixin({
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,
@@ -283,15 +288,20 @@ export default {
                     type: 'success',
                     title: 'user added successfully'
                     })
+                }).catch(()=>{
+                this.$parent.checkau();
+            });
+                  
         },
         editUser(user){
+            this.$parent.checkau();
             this.form.fill(user);
             this.editMode=true;
             $('#addUser').modal('show')
 
         },
         updateUser(){
-            
+             
             this.form.post(this.$store.getters.get_url+'users/'+this.form.id,{ headers: {"Authorization" : `Bearer ${this.$store.getters.get_token}`} },this.user).then(() => {
                  
             
@@ -299,6 +309,8 @@ export default {
             setTimeout(() => {  this.loadUsers()}, 2000);
             this.form.reset ();
             this.editMode=false;
+            }).catch(()=>{
+                this.$parent.checkau();
             });
             
         }
@@ -309,111 +321,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  
-.logo 
-{
-    font-size: 40px;
-    color: #F0567C;
-}
-.tit-1
-{
-    display: block;
-    text-align: right;
-    color: #f0567c;
-    font-size: 15px;
-    line-height: 10px;
-    margin-top: 6px !important;
-
-}
-.tit-2
-{
-    font-size: 12px;
-    color: #6E84A3;
-}
-.table-tit
-{
-  
-  
-    color: #f0567c;
-    font-size: 13px;
-    line-height: 24px;
-    
-}
-
-.table-tit-button button
-{
-    background-color:#f0567c ;
-    font-size: 12px
-}
- 
-.tab-contain
-{
-    
-    font-size: 12px;
-    text-align: center;
-
-}
-
-.tab-row
-{
-    padding: 10px;
-}
-
-.tab > div:nth-child(odd)
-{
-     
-  background:#F8FAFF;
- 
-}
-.tab-head
-{
-    background-color:#F5F6FA !important;
-
-}
-.tab-contain span.icon{
- 
-    padding: 2px 5px !important;
-    font-size: 9px;
-    cursor: pointer;
-}
-span.pen 
-{
-    background-color:#39AFD1 ;
-}
-span.trash 
-{
-    background-color: #f0567c ;
-}
-
-
-
-.input-group input,.input-group-append span{
+ .input-group input,.input-group-append span{
 font-size: 12px !important;
-border-color: black;
-border-right: 0  ; 
+border-color: black; 
 text-align: right;
  
 }
- 
 
-.input-group-append span
-{
-    background-color:#303658; 
-    color: white;
-    border-color: #303658;
-    border: 1px solid #303658 ; 
- 
-}
- 
 
- ::placeholder {
-  color: #6E84A3;
-  font-size: 9px;
-  text-align: right;
-}
-
-.modal-footer button
-{
-    font-size: 10px;
-}
+ 
 </style>
  

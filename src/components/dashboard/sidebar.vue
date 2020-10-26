@@ -23,7 +23,16 @@
     </div>
     <div class="list-bar m-2 mt-4">
         <ul class = "list-unstyled text-right text-white" v-if="user">
-            <li @click="soon()" v-if="user.permission.statistics" class="soon">الاحصائيات<font-awesome-icon :icon="['fas', 'chart-bar']"  class="text-white ml-2 icons" fixed-width/></li>
+            
+            
+            <router-link
+                to="/dashboard/statistics"
+                class="text-decoration-none text-white" 
+                >
+                <li v-if="user.permission.statistics" :class="currentUrl=='statistics'?'active':''">
+                    الاحصائيات<font-awesome-icon :icon="['fas', 'chart-bar']"  class="text-white ml-2 icons" fixed-width/>
+                </li>
+            </router-link>
             <router-link
                 to="/dashboard/users"
                 class="text-decoration-none text-white" 

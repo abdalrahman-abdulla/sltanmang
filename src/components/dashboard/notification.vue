@@ -82,11 +82,14 @@ export default {
   },
     methods: {
         loadnotifications(){
+             
             axios.post(this.$store.getters.get_url+'notifications',{
                 token:this.$store.getters.get_token}).then(({data}) => {
                 this.notifications=data.data;
                 this.copynotifications=data.data;
                  
+            }).catch(()=>{
+                this.$parent.checkau();
             });
         },
          

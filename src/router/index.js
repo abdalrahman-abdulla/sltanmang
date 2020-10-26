@@ -9,7 +9,7 @@ import Revenues from "@/components/dashboard/Revenues.vue";
 import workstages from "@/components/dashboard/work-stages.vue"; 
 import money from "@/components/dashboard/money.vue"; 
 import notification from "@/components/dashboard/notification.vue";
-
+import statistics from "@/components/dashboard/stat.vue";
 
 import store from "../store/index";
 
@@ -89,6 +89,13 @@ const routes = [
           path: 'buildings/:id',
           component: addbuilding,
           name:'editbuilding',
+          meta: {
+            secure: true
+          }
+        }, 
+        { 
+          path: 'statistics',
+          component: statistics, 
           meta: {
             secure: true
           }

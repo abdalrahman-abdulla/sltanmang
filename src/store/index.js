@@ -10,8 +10,7 @@ export default new Vuex.Store({
     loggedIn: false,
     user: null,
     token: null,
-    url:"https://gentle-mesa-28063.herokuapp.com/api/",
-     
+    url:"https://gentle-mesa-28063.herokuapp.com/api/" 
   },
   plugins: [new VuexPersistence().plugin],
   mutations: {
@@ -70,6 +69,26 @@ export default new Vuex.Store({
           commit("SET_user", null);
            
           
+      });
+    },
+    checkauth({ commit,state }) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(state.url+"auth/me", {
+            token: state.token
+          })
+          .then(res => {
+            
+             
+            resolve(res);
+          })
+          .catch(err => {
+            reject(err);
+            commit("SET_token", null);
+            
+            commit("SET_loggedIn", false);
+            commit("SET_user", null);
+          });
       });
     },
   },
