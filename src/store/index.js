@@ -10,8 +10,7 @@ export default new Vuex.Store({
     loggedIn: false,
     user: null,
     token: null,
-    //url:"https://gentle-mesa-28063.herokuapp.com/api/"
-    url:"http://127.0.0.1:8000/api/",
+    url:"https://gentle-mesa-28063.herokuapp.com/api/" 
   },
   plugins: [new VuexPersistence().plugin],
   mutations: {
@@ -68,7 +67,7 @@ export default new Vuex.Store({
             
           commit("SET_loggedIn", false);
           commit("SET_user", null);
-          state.url="http://127.0.0.1:8000/api/";
+           
           
       });
     },
