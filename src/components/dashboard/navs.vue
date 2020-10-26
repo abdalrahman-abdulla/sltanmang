@@ -20,8 +20,7 @@
 </template>
 
 <script>
- 
-
+ import router from "../../router/index"; 
 export default {
      
   name: "navs",
@@ -31,7 +30,7 @@ export default {
         this.$store
         .dispatch("performLogoutAction")
         .then(() => {
-          window.location.href = 'http://localhost:8080/login';
+          router.push({ name: 'login' })
         })
         .catch(err => {
           console.log(err);

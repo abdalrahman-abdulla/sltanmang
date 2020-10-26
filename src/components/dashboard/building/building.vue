@@ -29,11 +29,11 @@
                                 </router-link>
                              </button>
                             <form class="float-left">
-                                <div class="input-group   input-group-sm" @click="soon()">
+                                <div class="input-group   input-group-sm"  >
                                     <div class="input-group-prepend">
                                     <span class="input-group-text btn" >بحث</span>
                                     </div>
-                                    <input type="text" class="form-control" disabled>
+                                    <input type="text" class="form-control"  v-model="searchQuery" placeholder="كلمة البحث   ...">
                                 </div>
                             </form>
                         </div>
@@ -62,7 +62,7 @@
                                 
                             </div>
                             <!-- table body -->
-                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(building, index) in buildings" :key="index">
+                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(building, index) in searchm" :key="index">
                                 
                                 <div class="tab-contain p-0 col-1">{{index+1}}</div>
                                 <div class="tab-contain p-0 col-1">{{building.client_name}}</div>
@@ -88,7 +88,9 @@
                     
                 </div>
             </div>
-    </div>         
+    </div>  
+
+           
     </div>
    
    
@@ -110,13 +112,14 @@ export default {
   data() {
       return {
            buildings:[],
-           
+           searchQuery:''
 
       }
   },
   methods: {
         loadBuilding(){
-            axios.post('https://gentle-mesa-28063.herokuapp.com/api/building/all',{
+            this.$parent.checkau();
+            axios.post(this.$store.getters.get_url+'building/all',{
                 token:this.$store.getters.get_token}).then(({data}) => {
                 this.buildings=data.data;
                 
@@ -149,7 +152,8 @@ export default {
         soon(){
           
          $('#showmessage').modal('show');
-        }
+        },
+        
 
 
   },
@@ -159,88 +163,25 @@ export default {
         {router.go(-1)}
         
   },
+  computed: {
+      
+       searchm(){
+            
+             
+            let vm = this;
+            if(!vm.searchQuery){
+                return this.buildings;
+            }
+            return vm.buildings.filter(building => {
+                return building.client_name.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || building.client_phone.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || building.building_no.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1  
+            })
+        }
+  },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
- 
-.logo 
-{
-    font-size: 40px;
-    color: #F0567C;
-}
-.tit-1
-{
-    display: block;
-    text-align: right;
-    color: #f0567c;
-    font-size: 15px;
-    line-height: 10px;
-    margin-top: 6px !important;
-
-}
-.tit-2
-{
-    font-size: 12px;
-    color: #6E84A3;
-}
-.table-tit
-{
-  
-  
-    color: #f0567c;
-    font-size: 13px;
-    line-height: 24px;
-    
-}
-
-.table-tit-button button
-{
-    background-color:#f0567c ;
-    font-size: 12px
-}
- 
-.tab-contain
-{
-    
-    font-size: 12px;
-    text-align: center;
-
-}
-
-.tab-row
-{
-    padding: 10px;
-}
-
-.tab > div:nth-child(odd)
-{
-     
-  background: #F8FAFF;
- 
-}
-.tab-head
-{
-    background-color:#F5F6FA !important;
-
-}
-.tab-contain span.icon{
- 
-    padding: 2px 5px !important;
-    font-size: 9px;
-    cursor: pointer;
- 
-}
-span.pen 
-{
-    background-color:#39AFD1 ;
-}
-span.trash 
-{
-    background-color: #f0567c ;
-}
-
 .input-group input,.input-group-prepend span{
 font-size: 12px !important;
 border-color: black;
@@ -259,5 +200,20 @@ form{
     border: 1px solid #F0567C ; 
  
 }
+
+input::placeholder
+{
+    direction: rtl;
+    font-size: 10px;
+    
+}
+
+input{
+    color:#303658;
+    direction: rtl;
+
+}
+
+ 
 </style>
  

@@ -1,5 +1,5 @@
 <template>
-  <div class="users  pt-4 mt-3">
+<div class="users  pt-4 mt-3">
     <div class="container-fluid ">
             <div class="row m-0 p-0  d-flex flex-row-reverse">
                 <div class="logo ml-2"  >
@@ -38,8 +38,8 @@
                                     </div>
                                     
                                 </div>
-                                <div class="input-group   input-group-sm ml-2" @click="soon()">
-                                    <input type="text" class="form-control" placeholder="كلمة البحث" disabled>
+                                <div class="input-group   input-group-sm ml-2" >
+                                    <input type="text" class="form-control" placeholder="كلمة البحث" v-model="searchQuery">
                                     <div class="input-group-append">
                                     <span class="input-group-text btn"><font-awesome-icon :icon="['fas', 'calendar-day']"  class="text-white icon" fixed-width/></span>
                                     </div>
@@ -79,37 +79,24 @@
                                 
                             </div>
                             <!-- table body -->
-                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(item, index) in money" :key="index">
-                                
+                            <div class="row tab-row d-flex flex-row-reverse  justify-content-between " v-for="(item, index) in searchm" :key="index">
                                 <div class="tab-contain p-0 col-1">{{index+1}}</div>
                                 <div class="tab-contain p-0 col-1">{{item.client_name}}</div>
                                 <div class="tab-contain p-0 col-1">{{item.building_no}}</div>
                                 <div class="tab-contain p-0 col-1">{{item.work_stage}}</div>
                                 <div class="tab-contain p-0 col-1  yell-ba env"><span>{{item.payment_date}}</span></div>
                                 <div class="tab-contain p-0 col-1 yell-ba"> <span>{{formatToCurrency(item.payment_money)}}</span></div>
-                         
                                 <div class="tab-contain p-0 col-1 " @click="soon()">  <span class=" eye icon pen rounded text-white  mr-1"> <font-awesome-icon :icon="['fas', 'eye']"  class="  " fixed-width/></span> </div> 
                                 <div class="tab-contain p-0 col-1 eye" @click="soon()"><span class=" env icon pen rounded text-white  mr-1"><font-awesome-icon :icon="['fas', 'envelope']"  class="  " fixed-width/></span> </div>
-                                 
-                                     
-                                
-                            </div> 
-                               
-                            <!-- table body -->     
-                                 
+                            </div>
+                            <!-- table body --> 
                         </div>
-
-
                     </div>
-                    
                 </div>
             </div>
     </div>         
-    </div>
-   
-   
+</div>
 </template>
-
 <script>
 import axios from 'axios';
 import $ from 'jquery'; 
@@ -126,6 +113,7 @@ export default {
           allmoney:'',
           fromDate:'',
           toDate:'',
+          searchQuery:''
 
       }
   },
@@ -135,189 +123,93 @@ export default {
                 token:this.$store.getters.get_token}).then(({data}) => {
                 this.money=data.data;
                 this.copymoney=data.data;
-                
                  this.calc()
+            }).catch(()=>{
+                this.$parent.checkau();
             });
         },
         calc(){
             var resualt=0;
             this.money.forEach(element => {
-                resualt+=element.payment_money;
-                
-                
+                resualt+=element.payment_money;  
             });
             this.allmoney=this.formatToCurrency(resualt); 
-             
         },
         formatToCurrency(amount){
             return (amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,').slice(0, -3)+' IQD'; 
         },
         
-        filterDate(){
-                 
-                this.temp=JSON.parse(JSON.stringify(this.copymoney));
-                 
+        filterDate(){    
+            this.temp=JSON.parse(JSON.stringify(this.copymoney));
+            if(this.toDate && this.fromDate)
+            {   
+                
                 for (let index = 0; index < this.temp.length; index++) {
                     if(!(this.temp[index].payment_date <= this.toDate && this.temp[index].payment_date >= this.fromDate))
                     {
-                         
                         this.temp.splice(index,1);
                         index--;
-
                     }
-                    
                 }
-                this.money=this.temp;
-                
-            
+            }
+            this.money=this.temp;
         },
         soon(){
-          
          $('#showmessage').modal('show');
         }
-
     },
-    
     mounted() {
         this.loadmoney();
         if(!this.$store.getters.get_user.permission['money'])
         {router.go(-1)}
         
     },
+    computed: {
+        searchm(){
+           let vm = this;
+            if(!vm.searchQuery){
+                return this.money;
+            }
+            return vm.money.filter(item => {
+                return item.client_name.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || item.work_stage.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1 || item.building_no.toLowerCase().indexOf(vm.searchQuery.toLowerCase()) != -1  
+            })
+        }
+    },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
- 
-.logo 
-{
-    font-size: 40px;
-    color: #F0567C;
-}
-.tit-1
-{
-    display: block;
-    text-align: right;
-    color: #f0567c;
-    font-size: 15px;
-    line-height: 10px;
-    margin-top: 6px !important;
-
-}
-.tit-2
-{
-    font-size: 11px;
-    color: #6E84A3;
-}
-.table-tit
-{
-  
-  
-    color: #f0567c;
-    font-size: 13px;
-    line-height: 24px;
-    
-}
-.table-tit-2
-{
-    color: #303658;
-    font-size: 12px;
-    margin: -3px 0px;
-}
-.table-tit-2 SPAN
-{
-    color: #f0567c;
-     
-}
-
-.table-tit-button button
-{
-    background-color:#f0567c ;
-    font-size: 11px
-}
- 
-.tab-contain
-{
-    
-    font-size: 11px;
-    text-align: center;
-
-}
-
-.tab-row
-{
-    padding: 10px;
-}
-
-.tab > div:nth-child(odd)
-{
-     
-  background: #F8FAFF;
- 
-}
-.tab-head
-{
-    background-color:#F5F6FA !important;
-
-}
-.tab-contain span.icon{
- 
-    padding: 2px 5px !important;
-    font-size: 9px;
- 
-}
 .eye 
 {
     color:#39AFD1 ;
     font-size: 13px;
-}
- 
-
+    }
 .input-group input,.input-group-append span{
 font-size: 11px !important;
 border-color: black;
 border-right: 0  ; 
- 
 }
 form{
-    margin:  0 12px;
-}
-
+    margin:  0 12px;}
 .input-group-append span
 {
     background-color:#303658; 
     color: white;
     border-color: black;
-    border: 1px solid #303658 ; 
- 
-}
-
-.icon
-{
-    font-size: 14px;
-}
-
+    border: 1px solid #303658 ;
+    }
 ::placeholder {
-  color: #6E84A3;
+      color: #6E84A3;
   font-size: 9px;
   text-align: right;
-}
-
+  }
 .yell-ba  
 {
     background-color:#F89808;
     color: white;
-     border-radius: 20px;
-    
-}
-
-.tab-contain span.icon{
- 
-    padding: 1px 5px !important;
-    font-size: 12px;
-    cursor: pointer;
-}
+    border-radius: 20px;
+    }
 span.eye 
 {
     background-color:#303658 ;

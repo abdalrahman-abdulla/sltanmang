@@ -91,7 +91,7 @@
                                         <has-error :form="form" field="notice"></has-error>
                                     </div>  
                                     <div class="row col-12 pl-0"  :class="buildingend==true ?  ' d-none' : '' ">
-                                        <button class="btn add-item-end btn-success ml-0  rounded-smrounded-sm text-white btn-sm mx-2"   >
+                                        <button class="btn add-item-end btn-add ml-0  rounded-smrounded-sm text-white btn-sm mx-2"   >
                                     
                                                  {{updateMode ? 'تعديل الوحدة  ':'اضافة الوحدة اولا '}}        
                                         
@@ -142,8 +142,8 @@
                                     <div class="tab-contain p-0 col-1" @click="soon()">الوصل</div>
                                     <div class="tab-contain p-0 col-1">
                                         
-                                        <span class="icon trash rounded  " @click="deletepayment(payment)"><font-awesome-icon :icon="['fas', 'trash']"  class=" " fixed-width/></span> 
-                                        <span class="icon pen rounded ml-1" @click="editpaymentshow(payment)"> <font-awesome-icon :icon="['fas', 'pen']"  class="  " fixed-width/> </span>
+                                        <span class="icon trash rounded  text-white" @click="deletepayment(payment)"><font-awesome-icon :icon="['fas', 'trash']"  class=" " fixed-width/></span> 
+                                        <span class="icon pen rounded ml-1  text-white" @click="editpaymentshow(payment)"> <font-awesome-icon :icon="['fas', 'pen']"  class="  " fixed-width/> </span>
                                         
                                     
                                     </div>
@@ -193,7 +193,7 @@
                             </div>
                             <div class="row px-4">
                                 <div class="table-tit-button">
-                                 <button class="btn add-item-end btn-success ml-0  rounded-smrounded-sm text-white btn-sm mx-2"  @click="endpage()" >
+                                 <button class="btn add-item-end btn-add ml-0  rounded-smrounded-sm text-white btn-sm mx-2"  @click="endpage()" >
                                     
                                           {{updateMode ? 'تعديل وانهاء  ':'اضافة وانهاء  '}}         
                                         
@@ -457,6 +457,8 @@ export default {
                     type: 'success',
                     title: 'building added successfully'
                     })
+                    }).catch(()=>{
+                        this.$parent.checkau();
                     });}
                     else
                     {
@@ -477,7 +479,9 @@ export default {
                     })
                     
                     this.buildingend=true;
-                     });}
+                     }).catch(()=>{
+                this.$parent.checkau();
+            });}
              
         },
         addPayment(){
@@ -498,6 +502,8 @@ export default {
                 this.payment={};
                  $('#additem').modal('hide');
                  
+            }).catch(()=>{
+                this.$parent.checkau();
             })
             
         },
@@ -514,6 +520,8 @@ export default {
                  $('#addpayment').modal('hide');
                  
                  
+            }).catch(()=>{
+                this.$parent.checkau();
             })
         },
         deletepayment(payment){
@@ -551,7 +559,7 @@ export default {
                 });
                 toast.fire({
                     type: 'success',
-                    title: 'building added success'
+                    title: 'building proccess successfuly'
                 })
                 router.push({ name: 'buildings' })
              
@@ -585,6 +593,8 @@ export default {
                    
                  });
                   
+            }).catch(()=>{
+                this.$parent.checkau();
             });
         },
         editpaymentshow(paym){
@@ -600,7 +610,9 @@ export default {
                 data:this.editpayment}).then(() => {
                                    
                       $('#editpayment').modal('hide');
-                     });
+                     }).catch(()=>{
+                this.$parent.checkau();
+            });
         },
         soon(){
           
@@ -627,42 +639,7 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
  
-.logo 
-{
-    font-size: 40px;
-    color: #F0567C;
-}
-.tit-1
-{
-    display: block;
-    text-align: right;
-    color: #f0567c;
-    font-size: 15px;
-    line-height: 10px;
-    margin-top: 6px !important;
-
-}
-.tit-2
-{
-    font-size: 12px;
-    color: #6E84A3;
-}
-.table-tit
-{
-  
-  
-    color: #f0567c;
-    font-size: 13px;
-    line-height: 24px;
-    
-}
-
  
- 
- 
-
- 
-
 .input-group input,.input-group-append span{
 font-size: 14px !important;
 border-color: black;
@@ -683,11 +660,7 @@ form{
  
 }
 
-::placeholder {
-  color: #6E84A3;
-  font-size: 11px;
-  text-align: right;
-}
+ 
 
 .textarea
 {
@@ -696,38 +669,8 @@ resize: none;
  }
 
 
- .tab-contain
-{
-    
-    font-size: 12px;
-    text-align: center;
-    color: #303658;
-
-}
-
-.tab-row
-{
-    padding: 10px;
-    
-}
-
-.tab > div:nth-child(odd)
-{
-     
-  background: #F8FAFF;
  
-}
-.tab-head
-{
-    background-color:#F5F6FA !important;
-
-}
-.tab-contain span.icon{
  
-    
-    font-size: 13px;
-    cursor: pointer;
-}
 span.pen 
 {
     color:#39AFD1 ;
@@ -736,7 +679,12 @@ span.trash
 {
     color: #f0567c ;
 }
-
+.tab-contain span.icon{
+ 
+    
+       font-size: 10px !important;
+    cursor: pointer;
+}
 
 .card-footer
 {
@@ -778,7 +726,9 @@ button.plus
     cursor: pointer;
     border: 0;
 }
-
+.btn-add{
+    background-color: #39AFD1;
+}
  
 </style>
  
