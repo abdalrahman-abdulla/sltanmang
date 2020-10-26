@@ -236,14 +236,7 @@
 </template>
 
 <script>
-import axios from 'axios';
-/*import Swal from 'sweetalert2'; 
-import $ from 'jquery'; 
-import { Form, HasError, AlertError } from 'vform';
-import Vue from 'vue';
-import router from "../../router/index"
-Vue.component(HasError.name, HasError);
-Vue.component(AlertError.name, AlertError);*/
+import axios from 'axios'; 
 import Vue from 'vue'
 import Chartkick from 'vue-chartkick'
 import Chart from 'chart.js'
@@ -263,7 +256,9 @@ export default {
      }
     }, 
   mounted() {
-      this.loadstat1()
+      this.loadstat1();
+      f(!this.$store.getters.get_user.permission['statistics'])
+        {router.go(-1)}
   },
   methods: {
       loadstat1(){
