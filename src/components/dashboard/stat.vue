@@ -240,6 +240,7 @@ import axios from 'axios';
 import Vue from 'vue'
 import Chartkick from 'vue-chartkick'
 import Chart from 'chart.js'
+import router from "../../router/index"
 
 Vue.use(Chartkick.use(Chart))
 
@@ -257,7 +258,7 @@ export default {
     }, 
   mounted() {
       this.loadstat1();
-      f(!this.$store.getters.get_user.permission['statistics'])
+      if(!this.$store.getters.get_user.permission['statistics'])
         {router.go(-1)}
   },
   methods: {
