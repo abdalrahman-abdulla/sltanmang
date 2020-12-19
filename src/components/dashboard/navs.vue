@@ -4,7 +4,7 @@
       <div class="opt  ">
         <font-awesome-icon :icon="['fas', 'power-off']"  class=" ml-2 icons" fixed-width @click="performLogout()" />
          <router-link
-                to="/dashboard/notification"
+                :to="{ name: 'notification'}"
                 class="text-decoration-none text-white" 
                 > <font-awesome-icon :icon="['fas', 'bell']"  class=" ml-2 icons" fixed-width/> 
         </router-link>
