@@ -74,6 +74,7 @@ const routes = [
         { 
           path: 'notifications',
           component: notification,
+          name: "notification",
           meta: {
             secure: true
           }
