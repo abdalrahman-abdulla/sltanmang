@@ -1,5 +1,10 @@
 # buildings mangment system
 
+### url 
+
+https://alsltanmangment.herokuapp.com/
+
+
 ## Project setup
 ```
 npm install
