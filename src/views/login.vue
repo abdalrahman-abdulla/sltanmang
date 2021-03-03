@@ -34,7 +34,7 @@
                         </div>
                         <div class="mb-2">
                             <button class="btn btn-sm text-white fill ة-3" @click.prevent="fill()">
-                                ملئ الحقول تلقائيا
+                                ملئ الحقول تلقائياً
                             </button>
                         </div>
                         
