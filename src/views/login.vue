@@ -32,6 +32,12 @@
                         <div class="input-group mb-3 text-center text-danger bold" v-if="err"> 
                             <label class=" font-weight-bold w-100 text-center">{{err}}</label>
                         </div>
+                        <div class="mb-2">
+                            <button class="btn btn-sm text-white fill ة-3" @click.prevent="fill()">
+                                ملئ الحقول تلقائيا
+                            </button>
+                        </div>
+                        
                         <button class="btn btn-sm text-white " :class="isLoading?'d-none':''">
                             تسجيل الدخول
                             
@@ -78,6 +84,10 @@ export default {
                 console.log('failied' + err);
                 this.err='اسم المستخدم او كلمة المرور غير صحيح';
             });  
+        },
+        fill(){
+            this.username='abd009'
+            this.password='password'
         }
     }, 
 };
@@ -129,5 +139,9 @@ form
 .logo
 {
     height: 30%;
+}
+.fill{
+    background-color: #303658;
+    padding: 6px;
 }
 </style>
